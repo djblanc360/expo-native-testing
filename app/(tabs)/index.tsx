@@ -58,21 +58,21 @@ export default function Index() {
 
   return (
     <GestureHandlerRootView className="flex-1">
-    <View className="flex-1 bg-[#25292e] items-center">
+    <View className="flex-1 bg-[#25292e] items-center py-12">
       <View className="flex-1">
         <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage} />
         {pickedEmoji && <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />}
       </View>
       {showAppOptions ? (
-        <View className="absolute w-full bottom-80">
-          <View className="flex-row items-center justify-center gap-4">
+        <View className="absolute bottom-80 w-full">
+          <View className="flex-row gap-4 justify-center items-center">
             <IconButton icon="refresh" label="Reset" onPress={onReset} />
             <CircleButton onPress={onAddSticker} />
             <IconButton icon="save-alt" label="Save" onPress={onSaveImageAsync} />
           </View>
         </View>
       ) : (
-      <View className="items-center flex-1/3">
+      <View className="flex absolute bottom-10 items-center w-fulljustify-center">
         <Button label="Choose a photo" theme="primary" onPress={pickImageAsync} />
         <Button label="Use this photo" onPress={() => setShowAppOptions(true)} />
       </View>
