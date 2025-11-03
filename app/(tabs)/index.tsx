@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as MediaLibrary from 'expo-media-library';
+import React, { useEffect, useRef, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import EmojiList from '@/components/EmojiList';
@@ -20,10 +21,19 @@ import { ImageSourcePropType, View } from 'react-native';
 import PlaceholderImage from '@/assets/images/background-image.png';
 
 export default function Index() {
+  const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
+  const imageRef = useRef<View>(null);
+  
   const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
   const [showAppOptions, setShowAppOptions] = useState<boolean>(false);
   const [isModalVisiable, setIsModalVisiable] = useState<boolean>(false);
   const [pickedEmoji, setPickedEmoji] = useState<ImageSourcePropType | undefined>(undefined);
+
+  useEffect(() => {
+    if (!permissionResponse?.granted) {
+      requestPermission();
+    }
+  }, []);
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -58,13 +68,13 @@ export default function Index() {
 
   return (
     <GestureHandlerRootView className="flex-1">
-    <View className="flex-1 bg-[#25292e] items-center py-12">
-      <View className="flex-1">
+    <View className="flex-1 bg-[#25292e] items-center justify-center">
+      <View ref={imageRef} className='flex-1 justify-start items-center px-4 pt-20 w-full' collapsable={false}>
         <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage} />
         {pickedEmoji && <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />}
       </View>
       {showAppOptions ? (
-        <View className="absolute bottom-80 w-full">
+        <View className="absolute bottom-24 px-4 w-full">
           <View className="flex-row gap-4 justify-center items-center">
             <IconButton icon="refresh" label="Reset" onPress={onReset} />
             <CircleButton onPress={onAddSticker} />
@@ -72,9 +82,11 @@ export default function Index() {
           </View>
         </View>
       ) : (
-      <View className="flex absolute bottom-10 items-center w-fulljustify-center">
-        <Button label="Choose a photo" theme="primary" onPress={pickImageAsync} />
-        <Button label="Use this photo" onPress={() => setShowAppOptions(true)} />
+      <View className="absolute bottom-24 px-4 w-full">
+        <View className="gap-3 items-center">
+          <Button label="Choose a photo" theme="primary" onPress={pickImageAsync} />
+          <Button label="Use this photo" onPress={() => setShowAppOptions(true)} />
+        </View>
       </View>
       )}
       <EmojiPicker isVisible={isModalVisiable} onClose={onModalClose}>
