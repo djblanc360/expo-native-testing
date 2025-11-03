@@ -16,6 +16,7 @@
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
     "@react-navigation/native": "^7.1.6",
+    "dom-to-image": "^2.6.0",
     "expo": "^54.0.21",
     "expo-blur": "~15.0.7",
     "expo-constants": "~18.0.10",
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@types/dom-to-image": "^2.6.7",
     "@types/react": "~19.1.10",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",

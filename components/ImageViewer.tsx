@@ -10,29 +10,25 @@ export default function ImageViewer({ imgSource, selectedImage }: Props) {
   const imageSource = selectedImage ? { uri: selectedImage } : imgSource;
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   
-  // Calculate responsive dimensions, leaving space for buttons (approx 200px at bottom)
-  const maxImageWidth = Math.min(320, screenWidth * 0.85);
-  const maxImageHeight = Math.min(440, (screenHeight - 200) * 0.7);
-  const aspectRatio = 320 / 440; // Original aspect ratio
-  
-  let imageWidth = maxImageWidth;
-  let imageHeight = imageWidth / aspectRatio;
-  
-  // If height exceeds available space, scale down based on height
-  if (imageHeight > maxImageHeight) {
-    imageHeight = maxImageHeight;
-    imageWidth = imageHeight * aspectRatio;
-  }
+  // Container is flex-[2], so it's 2/3 of screen height
+  const containerHeight = (screenHeight * 2) / 3;
+  const containerWidth = screenWidth - 32; // Account for px-4 padding (16px each side)
 
-  return <Image 
-    source={imageSource} 
-    style={[styles.image, { width: imageWidth, height: imageHeight }]}
-    contentFit="contain"
-  />
+  return (
+    <Image 
+      source={imageSource} 
+      style={[styles.image, { 
+        width: containerWidth,
+        height: containerHeight,
+      }]}
+      contentFit="contain"
+    />
+  );
 }
 
 const styles = StyleSheet.create({
   image: {
+    maxHeight: 500,
     borderRadius: 18,
   },
 });
